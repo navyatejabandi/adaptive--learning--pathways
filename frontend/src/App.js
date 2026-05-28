@@ -5,7 +5,7 @@ import Home from "./components/Home";
 import Onboarding from "./components/Onboarding";
 import CandyRoadmap from "./components/CandyRoadmap";
 import DayDetail from "./components/DayDetail";
-import { getDayPlan, applyAdaptiveLogic, CATEGORIES } from "./data/content";
+import { getDayPlan, applyAdaptiveLogic } from "./data/content";
 
 function loadState(key, def) {
   try { return JSON.parse(localStorage.getItem(key)) ?? def; } catch { return def; }

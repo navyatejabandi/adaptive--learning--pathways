@@ -19,7 +19,7 @@ export default function Home({ user, streak, plan, allProgress, onGetStarted, on
   const avgScore = allScores.length ? Math.round(allScores.reduce((a,b)=>a+b,0)/allScores.length) : 0;
 
   const xp = totalCompleted * 10;
-  const perf = getLabel(xp);
+  const perf = getLabel(xp); // eslint-disable-line no-unused-vars
   const activeCourses = plan ? 1 : 0;
   const skillDone = plan ? Object.values(allProgress?.[plan.skill.id]||{}).filter(d=>d?.completed).length : 0;
   const skillPct = plan ? Math.round((skillDone / plan.days) * 100) : 0;
