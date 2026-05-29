@@ -26,7 +26,7 @@ export const CATEGORIES = {
 export const DAY_PLANS = {
   webdev: [
     {
-      topic: "HTML Basics", videoId: "UB1O30fR-EE",
+      topic: "HTML Basics", videoId: "qz0aGYrrlhU",
       questions: [
         { q: "What does HTML stand for?", options: ["Hyper Text Markup Language","High Text Machine Language","Home Tool Markup Language","Hyperlink Text Method Language"], answer: "Hyper Text Markup Language" },
         { q: "Which tag creates a hyperlink?", options: ["<link>","<a>","<href>","<url>"], answer: "<a>" },
@@ -41,7 +41,7 @@ export const DAY_PLANS = {
       ],
     },
     {
-      topic: "CSS Fundamentals", videoId: "yfoY53QXEnI",
+      topic: "CSS Fundamentals", videoId: "OXGznpKZ_sA",
       questions: [
         { q: "What does CSS stand for?", options: ["Cascading Style Sheets","Creative Style System","Computer Style Sheets","Colorful Style Syntax"], answer: "Cascading Style Sheets" },
         { q: "Which property changes text color?", options: ["font-color","text-color","color","foreground"], answer: "color" },
@@ -56,7 +56,7 @@ export const DAY_PLANS = {
       ],
     },
     {
-      topic: "JavaScript Basics", videoId: "W6NZfCO5SIk",
+      topic: "JavaScript Basics", videoId: "PkZNo7MFNFg",
       questions: [
         { q: "Which keyword declares a block-scoped variable?", options: ["var","let","define","set"], answer: "let" },
         { q: "What does === check?", options: ["Value only","Type only","Value and type","Reference"], answer: "Value and type" },
@@ -71,7 +71,7 @@ export const DAY_PLANS = {
       ],
     },
     {
-      topic: "React Introduction", videoId: "Ke90Tje7VS0",
+      topic: "React Introduction", videoId: "bMknfKXIFA8",
       questions: [
         { q: "React is maintained by?", options: ["Google","Microsoft","Facebook/Meta","Twitter"], answer: "Facebook/Meta" },
         { q: "What is JSX?", options: ["A database","JavaScript XML syntax","A CSS framework","A testing tool"], answer: "JavaScript XML syntax" },
@@ -86,7 +86,7 @@ export const DAY_PLANS = {
       ],
     },
     {
-      topic: "Node.js & APIs", videoId: "TlB_eWDSMt4",
+      topic: "Node.js & APIs", videoId: "Oe421EPjeBE",
       questions: [
         { q: "Node.js runs on which engine?", options: ["SpiderMonkey","V8","Chakra","Nitro"], answer: "V8" },
         { q: "Which command initializes a Node project?", options: ["node start","npm init","node init","npm start"], answer: "npm init" },
@@ -103,7 +103,7 @@ export const DAY_PLANS = {
   ],
   datascience: [
     {
-      topic: "Python Basics", videoId: "_uQrJ0TkZlc",
+      topic: "Python Basics", videoId: "rfscVS0vtbw",
       questions: [
         { q: "Python was created by?", options: ["Guido van Rossum","James Gosling","Bjarne Stroustrup","Dennis Ritchie"], answer: "Guido van Rossum" },
         { q: "Which is a Python list?", options: ["{}","()","[]","<>"], answer: "[]" },

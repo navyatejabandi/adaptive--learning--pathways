@@ -19,6 +19,8 @@ export default function ForYou({ user, streak, allProgress, plan, onChoosePath, 
   const perf = getLabel(xp);
 
   const allSkills = [...CATEGORIES.career.skills, ...CATEGORIES.extracurricular.skills];
+  // eslint-disable-next-line no-unused-vars
+  const _ = perf;
 
   return (
     <div className="foryou-page">
@@ -56,28 +58,37 @@ export default function ForYou({ user, streak, allProgress, plan, onChoosePath, 
         </div>
       </div>
 
-      {/* CURRENT PLAN */}
-      <div className="foryou-section-title">Current Learning Path</div>
-      {plan ? (
-        <div className="foryou-plan-card">
-          <span className="foryou-plan-icon">{plan.skill.icon}</span>
-          <div className="foryou-plan-info">
-            <div className="foryou-plan-name">{plan.skill.name}</div>
-            <div className="foryou-plan-meta">
-              {plan.category === "career" ? "💼 Career" : "🌟 Extra-Curricular"} · {plan.days} days
-            </div>
-            <div className="foryou-plan-progress">
-              <div className="foryou-progress-bar">
-                <div className="foryou-progress-fill" style={{
-                  width: `${Math.round((Object.values(allProgress?.[plan.skill.id]||{}).filter(d=>d?.completed).length / plan.days)*100)}%`
-                }} />
+      {/* CURRENT LEARNING PATH — show ALL skills with progress */}
+      <div className="foryou-section-title">My Learning Paths</div>
+      {Object.keys(allProgress || {}).length > 0 ? (
+        <div style={{ display: "flex", flexDirection: "column", gap: 12, marginBottom: 8 }}>
+          {Object.entries(allProgress).map(([skillId, sp]) => {
+            const skill = allSkills.find(s => s.id === skillId);
+            if (!skill) return null;
+            const done = Object.values(sp).filter(d => d?.completed).length;
+            const total = plan?.skill?.id === skillId ? plan.days : done;
+            const pct = total > 0 ? Math.round((done / total) * 100) : 100;
+            const scores = Object.values(sp).filter(d => d?.completed).map(d => d.score || 0);
+            const avg = scores.length ? Math.round(scores.reduce((a,b)=>a+b,0)/scores.length) : 0;
+            return (
+              <div key={skillId} className="foryou-plan-card">
+                <span className="foryou-plan-icon">{skill.icon}</span>
+                <div className="foryou-plan-info">
+                  <div className="foryou-plan-name">{skill.name}</div>
+                  <div className="foryou-plan-meta">{done} lessons · Avg score: {avg}%</div>
+                  <div className="foryou-plan-progress">
+                    <div className="foryou-progress-bar">
+                      <div className="foryou-progress-fill" style={{ width: `${pct}%` }} />
+                    </div>
+                    <span>{pct}%</span>
+                  </div>
+                </div>
               </div>
-              <span>{Math.round((Object.values(allProgress?.[plan.skill.id]||{}).filter(d=>d?.completed).length / plan.days)*100)}% complete</span>
-            </div>
-          </div>
+            );
+          })}
         </div>
       ) : (
-        <div className="foryou-empty">No active learning path. <span onClick={onChoosePath}>Start one →</span></div>
+        <div className="foryou-empty">No learning paths yet. <span onClick={onChoosePath}>Start one →</span></div>
       )}
 
       {/* RECOMMENDED SKILLS */}
