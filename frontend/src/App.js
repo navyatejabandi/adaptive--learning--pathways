@@ -6,6 +6,7 @@ import Onboarding from "./components/Onboarding";
 import CandyRoadmap from "./components/CandyRoadmap";
 import DayDetail from "./components/DayDetail";
 import { getDayPlan, applyAdaptiveLogic } from "./data/content";
+import ForYou from "./components/ForYou";
 
 function loadState(key, def) {
   try { return JSON.parse(localStorage.getItem(key)) ?? def; } catch { return def; }
@@ -145,6 +146,12 @@ export default function App() {
               <button className="btn-topbar-back" onClick={goBack}>← Back</button>
             )}
             {user && streak > 0 && <span className="topbar-streak">🔥 {streak} Day Streak</span>}
+            {user && (
+              <div className="topbar-user-pill" onClick={() => goTo("onboarding")}>
+                <span className="topbar-avatar">{user.avatar || "🎓"}</span>
+                <span className="topbar-username">{user.name?.split(" ")[0]}</span>
+              </div>
+            )}
             {!user && screen !== "login" && (
               <button className="btn-topbar-login" onClick={() => goTo("login")}>Sign In</button>
             )}
@@ -165,8 +172,10 @@ export default function App() {
           )}
           {screen === "catalog" && !user && <Login onLogin={handleLogin} />}
           {screen === "onboarding" && user && (
-            <Onboarding user={user} existingPlan={plan}
-              onDone={handleOnboardingDone} onContinue={() => goTo("roadmap")} />
+            <ForYou user={user} streak={streak} allProgress={allProgress} plan={plan}
+              onStartNew={handleOnboardingDone} onContinue={() => goTo("roadmap")}
+              onLogout={handleLogout}
+              onChoosePath={() => goTo("catalog")} />
           )}
           {screen === "roadmap" && plan && (
             <CandyRoadmap plan={plan} progress={progress} streak={streak}

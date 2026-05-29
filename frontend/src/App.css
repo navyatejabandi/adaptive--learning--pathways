@@ -279,3 +279,86 @@ body {
 }
 .avatar-btn:hover { border-color: var(--purple); background: var(--purple-light); }
 .avatar-btn.selected { border-color: var(--purple); background: var(--purple-light); }
+
+/* ── TOPBAR USER PILL ── */
+.topbar-user-pill {
+  display: flex; align-items: center; gap: 8px;
+  background: var(--purple-light); border: 1.5px solid var(--border);
+  border-radius: 20px; padding: 5px 14px 5px 6px;
+  cursor: pointer; transition: background 0.15s;
+}
+.topbar-user-pill:hover { background: #ddd6fe; }
+.topbar-avatar { font-size: 22px; line-height: 1; }
+.topbar-username { font-size: 13px; font-weight: 700; color: var(--purple); }
+
+/* ── FOR YOU / PROFILE PAGE ── */
+.foryou-page { padding: 0; }
+
+.foryou-profile-card {
+  background: var(--white); border: 1px solid var(--border);
+  border-radius: 16px; padding: 24px 28px;
+  display: flex; align-items: center; gap: 20px;
+  margin-bottom: 20px; flex-wrap: wrap;
+}
+.foryou-avatar { font-size: 64px; line-height: 1; flex-shrink: 0; }
+.foryou-info { flex: 1; min-width: 0; }
+.foryou-name { font-size: 22px; font-weight: 800; color: var(--text); margin-bottom: 4px; }
+.foryou-email { font-size: 13px; color: var(--muted); margin-bottom: 6px; }
+.foryou-goal { font-size: 13px; color: var(--text); margin-bottom: 8px; }
+.foryou-badge { font-size: 12px; font-weight: 700; padding: 4px 12px; border-radius: 20px; display: inline-block; }
+.foryou-logout {
+  background: #fee2e2; border: 1px solid #fecaca; color: #dc2626;
+  padding: 8px 18px; border-radius: 8px; font-size: 13px; font-weight: 700;
+  font-family: inherit; cursor: pointer; white-space: nowrap; align-self: flex-start;
+}
+.foryou-logout:hover { background: #fecaca; }
+
+.foryou-stats {
+  display: grid; grid-template-columns: repeat(4, 1fr);
+  gap: 12px; margin-bottom: 24px;
+}
+.foryou-stat {
+  background: var(--white); border: 1px solid var(--border);
+  border-radius: 14px; padding: 16px; text-align: center;
+}
+.foryou-stat-val { font-size: 28px; font-weight: 800; color: var(--purple); }
+.foryou-stat-label { font-size: 11px; color: var(--muted); font-weight: 600; text-transform: uppercase; letter-spacing: 0.4px; margin-top: 4px; }
+
+.foryou-section-title { font-size: 16px; font-weight: 800; color: var(--text); margin-bottom: 12px; }
+
+.foryou-plan-card {
+  background: var(--white); border: 1px solid var(--border);
+  border-radius: 14px; padding: 18px 22px;
+  display: flex; align-items: center; gap: 16px;
+}
+.foryou-plan-icon { font-size: 36px; flex-shrink: 0; }
+.foryou-plan-info { flex: 1; }
+.foryou-plan-name { font-size: 16px; font-weight: 700; color: var(--text); margin-bottom: 3px; }
+.foryou-plan-meta { font-size: 13px; color: var(--muted); margin-bottom: 10px; }
+.foryou-plan-progress { display: flex; align-items: center; gap: 10px; font-size: 12px; color: var(--muted); font-weight: 600; }
+.foryou-progress-bar { flex: 1; background: #e5e7eb; border-radius: 6px; height: 8px; overflow: hidden; }
+.foryou-progress-fill { background: var(--purple); height: 100%; border-radius: 6px; transition: width 0.4s; }
+
+.foryou-empty { color: var(--muted); font-size: 14px; padding: 20px 0; }
+.foryou-empty span { color: var(--purple); cursor: pointer; font-weight: 700; }
+.foryou-empty span:hover { text-decoration: underline; }
+
+.foryou-skills-grid {
+  display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+  gap: 12px;
+}
+.foryou-skill-card {
+  background: var(--white); border: 1.5px solid var(--border);
+  border-radius: 14px; padding: 18px 12px;
+  text-align: center; cursor: pointer;
+  display: flex; flex-direction: column; align-items: center; gap: 8px;
+  transition: all 0.15s;
+}
+.foryou-skill-card:hover { border-color: var(--purple); transform: translateY(-2px); box-shadow: 0 4px 14px rgba(108,71,255,0.12); }
+.foryou-skill-icon { font-size: 28px; }
+.foryou-skill-name { font-size: 13px; font-weight: 700; color: var(--text); }
+
+@media (max-width: 768px) {
+  .foryou-stats { grid-template-columns: repeat(2, 1fr); }
+  .foryou-profile-card { flex-direction: column; align-items: flex-start; }
+}
