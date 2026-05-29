@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 
 const AVATARS = ["🦊","🐯","🦁","🐻","🐼","🐨","🦄","🐸","🐙","🦋","🦅","🐬","🐺","🦝","🐲","🦩","🦚","🐧","🧑‍💻","👩‍🎨","🧑‍🚀","👨‍🔬","🧙","🦸","🧝","🥷","👩‍🏫","🧑‍🎤","🎓","🏆"];
+const API = "https://adaptive-learning-pathways.onrender.com/api";
 
 export default function Login({ onLogin }) {
   const [mode, setMode] = useState("login");
@@ -12,8 +13,7 @@ export default function Login({ onLogin }) {
   const [avatar, setAvatar] = useState("🦊");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
-
-  const getUsers = () => JSON.parse(localStorage.getItem("alp_users") || "{}");
+  const [loading, setLoading] = useState(false);
 
   const handleStep1 = () => {
     if (!displayName.trim() || !username.trim() || !email.trim()) { setError("Please fill in all fields."); return; }
@@ -21,24 +21,39 @@ export default function Login({ onLogin }) {
     setError(""); setStep(2);
   };
 
-  const handleRegister = () => {
+  const handleRegister = async () => {
     if (password.length < 4) { setError("Password must be at least 4 characters."); return; }
-    const users = getUsers();
-    const id = username.trim().toLowerCase();
-    if (users[id]) { setError("Username already taken."); return; }
-    users[id] = { username: id, name: displayName.trim(), email: email.trim().toLowerCase(), password, avatar, goal };
-    localStorage.setItem("alp_users", JSON.stringify(users));
-    onLogin({ name: displayName.trim(), email: email.trim().toLowerCase(), username: id, avatar, goal });
+    setLoading(true); setError("");
+    try {
+      const res = await fetch(`${API}/users/register`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ name: displayName.trim(), email: email.trim().toLowerCase(), password, avatar, goal, username: username.trim().toLowerCase() }),
+      });
+      const data = await res.json();
+      if (!res.ok) { setError(data.message || "Registration failed."); return; }
+      onLogin({ name: data.name, email: data.email, avatar: data.avatar || avatar, goal: data.goal || goal, id: data.id });
+    } catch {
+      setError("Network error. Please try again.");
+    } finally { setLoading(false); }
   };
 
-  const handleLogin = () => {
+  const handleLogin = async () => {
     const id = username.trim().toLowerCase();
     if (!id || !password) { setError("Please fill in all fields."); return; }
-    const users = getUsers();
-    const user = users[id];
-    if (!user) { setError("Username not found."); return; }
-    if (user.password !== password) { setError("Incorrect password."); return; }
-    onLogin({ name: user.name, email: user.email || id, username: id, avatar: user.avatar || "🎓", goal: user.goal || "" });
+    setLoading(true); setError("");
+    try {
+      const res = await fetch(`${API}/users/login`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email: id, password }),
+      });
+      const data = await res.json();
+      if (!res.ok) { setError(data.message || "Login failed."); return; }
+      onLogin({ name: data.name, email: data.email, avatar: data.avatar || "🎓", goal: data.goal || "", id: data.id });
+    } catch {
+      setError("Network error. Please try again.");
+    } finally { setLoading(false); }
   };
 
   return (
@@ -59,15 +74,17 @@ export default function Login({ onLogin }) {
           <>
             <div className="login-step-label">SIGN IN</div>
             <div className="form-group">
-              <label>Username</label>
-              <input type="text" placeholder="your_username" value={username} onChange={e => setUsername(e.target.value)} autoCapitalize="none" />
+              <label>Email or Username</label>
+              <input type="text" placeholder="your@email.com" value={username} onChange={e => setUsername(e.target.value)} autoCapitalize="none" />
             </div>
             <div className="form-group">
               <label>Password</label>
               <input type="password" placeholder="••••••••" value={password} onChange={e => setPassword(e.target.value)} onKeyDown={e => e.key === "Enter" && handleLogin()} />
             </div>
             {error && <p className="error-msg">{error}</p>}
-            <button className="btn-primary" onClick={handleLogin}>Sign In →</button>
+            <button className="btn-primary" onClick={handleLogin} disabled={loading}>
+              {loading ? "Signing in..." : "Sign In →"}
+            </button>
             <p className="login-switch">Don't have an account? <span onClick={() => { setMode("register"); setStep(1); setError(""); }}>Sign up</span></p>
           </>
         ) : step === 1 ? (
@@ -111,7 +128,9 @@ export default function Login({ onLogin }) {
               <input type="password" placeholder="••••••••" value={password} onChange={e => setPassword(e.target.value)} />
             </div>
             {error && <p className="error-msg">{error}</p>}
-            <button className="btn-primary" onClick={handleRegister}>Create Account →</button>
+            <button className="btn-primary" onClick={handleRegister} disabled={loading}>
+              {loading ? "Creating account..." : "Create Account →"}
+            </button>
             <p className="login-switch"><span onClick={() => setStep(1)}>← Back</span></p>
           </>
         )}
