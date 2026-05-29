@@ -1,7 +1,30 @@
 import React, { useState } from "react";
 import { getNextLevel } from "../utils/recommendation";
+import emailjs from "@emailjs/browser";
 
-export default function DayDetail({ dayIndex, dayData, isCompleted, onBack, onComplete }) {
+const EMAILJS_SERVICE_ID = "service_b2ta60s";
+const EMAILJS_TEMPLATE_ID = "template_93dgful";
+const EMAILJS_PUBLIC_KEY = "xrURtP_IZIpuBgdcF";
+
+function sendProgressEmail(user, dayIndex, topic, score, streak, nextLevel) {
+  if (!user?.email || !user.email.includes("@")) return; // only send if real email
+  emailjs.send(
+    EMAILJS_SERVICE_ID,
+    EMAILJS_TEMPLATE_ID,
+    {
+      user_name: user.name,
+      user_email: user.email,
+      day_number: dayIndex + 1,
+      topic: topic,
+      score: score + "%",
+      streak: streak + " days",
+      next_level: nextLevel,
+    },
+    EMAILJS_PUBLIC_KEY
+  ).catch(() => {}); // silent fail — don't block the app
+}
+
+export default function DayDetail({ dayIndex, dayData, isCompleted, onBack, onComplete, user, streak }) {
   const [showQuiz, setShowQuiz] = useState(false);
   const [current, setCurrent] = useState(0);
   const [selected, setSelected] = useState(null);
@@ -80,7 +103,11 @@ export default function DayDetail({ dayIndex, dayData, isCompleted, onBack, onCo
             {pct < 40 && "Two revision days will be added to help you master this before moving on."}
           </div>
           <p style={{ fontSize: 12, color: "#6b7280", marginBottom: 20 }}>⚠️ Once completed, this day will be permanently locked.</p>
-          <button className="w3-next-btn" onClick={() => onComplete(pct, wrongCount)}>
+          <button className="w3-next-btn" onClick={() => {
+            const next = getNextLevel(pct);
+            sendProgressEmail(user, dayIndex, dayData.topic, pct, streak, next.label);
+            onComplete(pct, wrongCount);
+          }}>
             Complete &amp; Lock Day ✓
           </button>
         </div>

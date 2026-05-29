@@ -7,6 +7,7 @@ export default function Login({ onLogin }) {
   const [step, setStep] = useState(1);
   const [displayName, setDisplayName] = useState("");
   const [username, setUsername] = useState("");
+  const [email, setEmail] = useState("");
   const [goal, setGoal] = useState("");
   const [avatar, setAvatar] = useState("🦊");
   const [password, setPassword] = useState("");
@@ -15,7 +16,8 @@ export default function Login({ onLogin }) {
   const getUsers = () => JSON.parse(localStorage.getItem("alp_users") || "{}");
 
   const handleStep1 = () => {
-    if (!displayName.trim() || !username.trim()) { setError("Please fill in all fields."); return; }
+    if (!displayName.trim() || !username.trim() || !email.trim()) { setError("Please fill in all fields."); return; }
+    if (!email.includes("@") || !email.includes(".")) { setError("Please enter a valid email address."); return; }
     setError(""); setStep(2);
   };
 
@@ -24,9 +26,9 @@ export default function Login({ onLogin }) {
     const users = getUsers();
     const id = username.trim().toLowerCase();
     if (users[id]) { setError("Username already taken."); return; }
-    users[id] = { username: id, name: displayName.trim(), password, avatar, goal };
+    users[id] = { username: id, name: displayName.trim(), email: email.trim().toLowerCase(), password, avatar, goal };
     localStorage.setItem("alp_users", JSON.stringify(users));
-    onLogin({ name: displayName.trim(), email: id, avatar, goal });
+    onLogin({ name: displayName.trim(), email: email.trim().toLowerCase(), username: id, avatar, goal });
   };
 
   const handleLogin = () => {
@@ -36,7 +38,7 @@ export default function Login({ onLogin }) {
     const user = users[id];
     if (!user) { setError("Username not found."); return; }
     if (user.password !== password) { setError("Incorrect password."); return; }
-    onLogin({ name: user.name, email: id, avatar: user.avatar || "🎓", goal: user.goal || "" });
+    onLogin({ name: user.name, email: user.email || id, username: id, avatar: user.avatar || "🎓", goal: user.goal || "" });
   };
 
   return (
@@ -78,6 +80,11 @@ export default function Login({ onLogin }) {
             <div className="form-group">
               <label>Choose a username</label>
               <input type="text" placeholder="jane_doe" value={username} onChange={e => setUsername(e.target.value)} autoCapitalize="none" />
+            </div>
+            <div className="form-group">
+              <label>Email address</label>
+              <input type="email" placeholder="jane@example.com" value={email} onChange={e => setEmail(e.target.value)} autoCapitalize="none" />
+              <p style={{ fontSize: 11, color: "var(--muted)", marginTop: 4 }}>We'll send your progress reports here</p>
             </div>
             <div className="form-group">
               <label>Choose your avatar</label>

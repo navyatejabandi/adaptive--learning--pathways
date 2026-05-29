@@ -177,7 +177,9 @@ export default function App() {
             <DayDetail dayIndex={selectedDay} dayData={plan.dayPlans[selectedDay]}
               isCompleted={!!progress[selectedDay]?.completed}
               onBack={() => { goBack(); setSelectedDay(null); }}
-              onComplete={(score, wrongCount) => handleDayComplete(selectedDay, score, wrongCount)} />
+              onComplete={(score, wrongCount) => handleDayComplete(selectedDay, score, wrongCount)}
+              user={user}
+              streak={streak} />
           )}
         </div>
       </div>
