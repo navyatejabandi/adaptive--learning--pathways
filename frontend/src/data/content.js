@@ -26,7 +26,7 @@ export const CATEGORIES = {
 export const DAY_PLANS = {
   webdev: [
     {
-      topic: "HTML Basics", videoId: "qz0aGYrrlhU",
+      topic: "HTML Basics", videoId: "salY_Sm6mv4",
       questions: [
         { q: "What does HTML stand for?", options: ["Hyper Text Markup Language","High Text Machine Language","Home Tool Markup Language","Hyperlink Text Method Language"], answer: "Hyper Text Markup Language" },
         { q: "Which tag creates a hyperlink?", options: ["<link>","<a>","<href>","<url>"], answer: "<a>" },
@@ -41,7 +41,7 @@ export const DAY_PLANS = {
       ],
     },
     {
-      topic: "CSS Fundamentals", videoId: "OXGznpKZ_sA",
+      topic: "CSS Fundamentals", videoId: "1Rs2ND1ryYc",
       questions: [
         { q: "What does CSS stand for?", options: ["Cascading Style Sheets","Creative Style System","Computer Style Sheets","Colorful Style Syntax"], answer: "Cascading Style Sheets" },
         { q: "Which property changes text color?", options: ["font-color","text-color","color","foreground"], answer: "color" },
@@ -56,7 +56,7 @@ export const DAY_PLANS = {
       ],
     },
     {
-      topic: "JavaScript Basics", videoId: "PkZNo7MFNFg",
+      topic: "JavaScript Basics", videoId: "W6NZfCO5SIk",
       questions: [
         { q: "Which keyword declares a block-scoped variable?", options: ["var","let","define","set"], answer: "let" },
         { q: "What does === check?", options: ["Value only","Type only","Value and type","Reference"], answer: "Value and type" },
@@ -71,7 +71,7 @@ export const DAY_PLANS = {
       ],
     },
     {
-      topic: "React Introduction", videoId: "bMknfKXIFA8",
+      topic: "React Introduction", videoId: "SqcY0GlETPk",
       questions: [
         { q: "React is maintained by?", options: ["Google","Microsoft","Facebook/Meta","Twitter"], answer: "Facebook/Meta" },
         { q: "What is JSX?", options: ["A database","JavaScript XML syntax","A CSS framework","A testing tool"], answer: "JavaScript XML syntax" },
@@ -86,7 +86,7 @@ export const DAY_PLANS = {
       ],
     },
     {
-      topic: "Node.js & APIs", videoId: "Oe421EPjeBE",
+      topic: "Node.js & APIs", videoId: "BLl32FvcdVM",
       questions: [
         { q: "Node.js runs on which engine?", options: ["SpiderMonkey","V8","Chakra","Nitro"], answer: "V8" },
         { q: "Which command initializes a Node project?", options: ["node start","npm init","node init","npm start"], answer: "npm init" },
@@ -103,7 +103,7 @@ export const DAY_PLANS = {
   ],
   datascience: [
     {
-      topic: "Python Basics", videoId: "rfscVS0vtbw",
+      topic: "Python Basics", videoId: "kqtD5dpn9C8",
       questions: [
         { q: "Python was created by?", options: ["Guido van Rossum","James Gosling","Bjarne Stroustrup","Dennis Ritchie"], answer: "Guido van Rossum" },
         { q: "Which is a Python list?", options: ["{}","()","[]","<>"], answer: "[]" },
@@ -118,7 +118,7 @@ export const DAY_PLANS = {
       ],
     },
     {
-      topic: "Data Analysis with Pandas", videoId: "vmEHCJofslg",
+      topic: "Data Analysis with Pandas", videoId: "ZyhVh-qRZPA",
       questions: [
         { q: "Pandas is used for?", options: ["Web development","Data manipulation","Game development","Networking"], answer: "Data manipulation" },
         { q: "Which object is like a table in Pandas?", options: ["Series","Array","DataFrame","Matrix"], answer: "DataFrame" },

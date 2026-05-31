@@ -94,7 +94,7 @@ export default function App() {
       <nav className={`sidebar ${sidebarOpen ? "open" : ""}`}>
         <div className="sidebar-logo">
           <img src="/alp-logo.png" alt="ALP" className="sidebar-logo-img" onError={e => { e.target.style.display='none'; }} />
-          <span className="sidebar-logo-text">Adaptive</span>
+          <span className="sidebar-logo-text">Adaptive Learning Pathways</span>
           <button className="sidebar-close" onClick={() => setSidebarOpen(false)}>✕</button>
         </div>
 
