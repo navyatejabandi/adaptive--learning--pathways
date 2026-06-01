@@ -171,7 +171,7 @@ export default function DayDetail({ dayIndex, dayData, isCompleted, onBack, onCo
       <button className="back-btn" onClick={onBack}>← Roadmap</button>
       {dayData.isRevision && (
         <div style={{ background: "#fffbeb", border: "1px solid #fde68a", borderRadius: 8, padding: "10px 14px", marginBottom: 16, fontSize: 13, color: "#b45309", fontWeight: 600 }}>
-          📚 Revision Day — revisit this topic to strengthen your understanding.
+          📚 {dayData.revisionNote || "Revision Day — revisit this topic to strengthen your understanding."}
         </div>
       )}
       <h2>Day {dayIndex + 1}: {dayData.topic}</h2>

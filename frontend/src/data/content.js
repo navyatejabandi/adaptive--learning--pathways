@@ -259,22 +259,79 @@ export function getDayPlan(skillId, totalDays) {
 export function applyAdaptiveLogic(plan, dayIndex, wrongCount) {
   const totalQuestions = plan.dayPlans[dayIndex]?.questions?.length || 10;
   const correct = totalQuestions - wrongCount;
-  const score = (correct / totalQuestions) * 100;
+  const score = Math.round((correct / totalQuestions) * 100);
   const newDayPlans = [...plan.dayPlans];
   const currentDay = newDayPlans[dayIndex];
-  const revisionDay = { ...currentDay, topic: "Revision: " + currentDay.topic, isRevision: true };
+
+  // Build revision days with same video but flagged as revision
+  const quickRevision = {
+    ...currentDay,
+    topic: "📝 Quick Revision: " + currentDay.topic,
+    isRevision: true,
+    revisionNote: "You scored " + score + "%. Review the key concepts before moving on.",
+  };
+  const deepDive = {
+    ...currentDay,
+    topic: "🔍 Deep Dive: " + currentDay.topic,
+    isRevision: true,
+    revisionNote: "Focus on the questions you got wrong. Take your time.",
+  };
+  const practiceDay = {
+    ...currentDay,
+    topic: "💪 Practice: " + currentDay.topic,
+    isRevision: true,
+    revisionNote: "Extra practice to solidify your understanding.",
+  };
+
   let daysAdded = 0;
   let message;
-  if (score < 40) {
-    newDayPlans.splice(dayIndex + 1, 0, revisionDay, { ...revisionDay, topic: "Deep Dive: " + currentDay.topic });
+
+  if (score < 30) {
+    // Very poor — add 3 extra days
+    newDayPlans.splice(dayIndex + 1, 0, quickRevision, deepDive, practiceDay);
+    daysAdded = 3;
+    message = {
+      type: "struggling",
+      text: `You scored ${score}% (${correct}/${totalQuestions}). Don't worry — 3 extra revision days added to help you master this topic before moving on.`,
+    };
+  } else if (score < 50) {
+    // Poor — add 2 extra days
+    newDayPlans.splice(dayIndex + 1, 0, quickRevision, deepDive);
     daysAdded = 2;
-    message = { type: "struggling", text: `You got ${correct}/${totalQuestions}. 2 revision days added to reinforce this topic.` };
-  } else if (score < 60) {
-    newDayPlans.splice(dayIndex + 1, 0, revisionDay);
+    message = {
+      type: "struggling",
+      text: `You scored ${score}% (${correct}/${totalQuestions}). 2 revision days added to reinforce this topic.`,
+    };
+  } else if (score < 70) {
+    // Below average — add 1 revision day
+    newDayPlans.splice(dayIndex + 1, 0, quickRevision);
     daysAdded = 1;
-    message = { type: "review", text: `You got ${correct}/${totalQuestions}. A revision day has been added.` };
+    message = {
+      type: "review",
+      text: `You scored ${score}% (${correct}/${totalQuestions}). A revision day has been added to strengthen your understanding.`,
+    };
+  } else if (score < 80) {
+    // Average — no extra days, gentle encouragement
+    message = {
+      type: "good",
+      text: `Good work! You scored ${score}% (${correct}/${totalQuestions}). Keep it up and aim higher next time!`,
+    };
+  } else if (score < 90) {
+    // Good
+    message = {
+      type: "good",
+      text: `Great job! You scored ${score}% (${correct}/${totalQuestions}). You're on track — moving to the next topic.`,
+    };
   } else {
-    message = { type: "good", text: score >= 80 ? `Excellent! ${correct}/${totalQuestions} — moving on.` : `Good work! ${correct}/${totalQuestions} — keep it up!` };
+    // Excellent — 90%+
+    message = {
+      type: "good",
+      text: `Outstanding! You scored ${score}% (${correct}/${totalQuestions}). You've mastered this topic!`,
+    };
   }
-  return { updatedPlan: { ...plan, days: plan.days + daysAdded, dayPlans: newDayPlans }, message };
+
+  return {
+    updatedPlan: { ...plan, days: plan.days + daysAdded, dayPlans: newDayPlans },
+    message,
+  };
 }
