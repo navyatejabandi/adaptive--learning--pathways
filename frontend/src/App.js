@@ -189,7 +189,9 @@ export default function App() {
 
         <div className="main">
           {(screen === "home" || screen === "dashboard") && (
-            <Home user={user} streak={streak} plan={plan} allProgress={allProgress}
+            <Home
+              key={Object.values(allProgress).reduce((s,sp) => s + Object.values(sp).filter(d=>d?.completed).length, 0)}
+              user={user} streak={streak} plan={plan} allProgress={allProgress}
               onGetStarted={() => user ? goTo("onboarding") : goTo("login")}
               onGoToRoadmap={() => goTo("roadmap")}
               onGoToCatalog={() => goTo("catalog")} />

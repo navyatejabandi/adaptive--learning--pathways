@@ -25,14 +25,22 @@ export default function Home({ user, streak, plan, allProgress, onGetStarted, on
   const skillPct = plan ? Math.round((skillDone / plan.days) * 100) : 0;
 
   const DAYS = ["Fri","Sat","Sun","Mon","Tue","Wed","Thu"];
-  const activityData = DAYS.map((_, i) => i === 6 ? streak * 2 : i === 5 ? Math.max(0, streak-1) : 0);
+  // Build real activity data from last 7 days
+  const activityData = DAYS.map((_, i) => {
+    const d = new Date();
+    d.setDate(d.getDate() - (6 - i));
+    const dateStr = d.toDateString();
+    return Object.values(allProgress || {}).reduce((count, sp) =>
+      count + Object.values(sp).filter(day => day?.completed && day.date === dateStr).length, 0
+    );
+  });
   const maxAct = Math.max(...activityData, 1);
 
   const recentActivity = Object.entries(allProgress || {}).flatMap(([skillId, sp]) =>
     Object.entries(sp).filter(([,d]) => d?.completed).map(([dayIdx, d]) => ({
-      skillId, dayIdx: Number(dayIdx), score: d.score, date: d.date, wrongCount: d.wrongCount
+      skillId, dayIdx: Number(dayIdx), score: d.score, date: d.date, wrongCount: d.wrongCount, completedAt: d.completedAt || 0
     }))
-  ).sort((a,b) => (b.completedAt||0)-(a.completedAt||0)).slice(0,3);
+  ).sort((a,b) => b.completedAt - a.completedAt).slice(0,3);
 
   if (!user) {
     return (
