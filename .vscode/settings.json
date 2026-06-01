@@ -1,4 +1,7 @@
 {
     "kiroAgent.configureMCP": "Disabled",
-    "git.ignoreLimitWarning": true
+    "git.ignoreLimitWarning": true,
+    "kiroAgent.trustedCommands": [
+        "git add . && git commit -m \"update\""
+    ]
 }

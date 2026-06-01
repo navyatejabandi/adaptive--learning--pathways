@@ -54,6 +54,25 @@ export default function App() {
     goTo("roadmap");
   };
 
+  const sendUnlockEmail = (u, nextDayIndex, nextTopic, skillName) => {
+    import("@emailjs/browser").then(emailjs => {
+      emailjs.default.send(
+        "service_b2ta60s",
+        "template_93dgful",
+        {
+          user_name: u.name,
+          user_email: u.email,
+          day_number: nextDayIndex + 1,
+          topic: nextTopic,
+          score: "—",
+          streak: streak + " days",
+          next_level: `Day ${nextDayIndex + 1} of ${skillName} is now unlocked! Open the app to continue.`,
+        },
+        "xrURtP_IZIpuBgdcF"
+      ).catch(() => {});
+    });
+  };
+
   const handleDayComplete = (dayIndex, score, wrongCount) => {
     const today = new Date().toDateString();
     const lastDay = loadState(`lastday_${user.email}`, null);
@@ -71,6 +90,16 @@ export default function App() {
     saveState(`plan_${user.email}`, updatedPlan);
     saveState(`allprogress_${user.email}`, newAllProgress);
     saveState(`streak_${user.email}`, newStreak);
+
+    // Schedule unlock email after 24 hours
+    const nextDayIndex = dayIndex + 1;
+    if (nextDayIndex < updatedPlan.dayPlans.length && user?.email?.includes("@")) {
+      const nextTopic = updatedPlan.dayPlans[nextDayIndex]?.topic || "Next Lesson";
+      setTimeout(() => {
+        sendUnlockEmail(user, nextDayIndex, nextTopic, plan.skill.name);
+      }, 24 * 60 * 60 * 1000); // 24 hours
+    }
+
     goTo("roadmap"); setSelectedDay(null);
   };
 
